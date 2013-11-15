@@ -1,0 +1,13 @@
+function particle_load(filenumber)
+  global x y z velocity
+    
+  fIN=sprintf('par%04d.log',filenumber)
+  fid=fopen(fIN);
+  t=fread(fid,1,'float32');
+  np=fread(fid,1,'int');
+  x=fread(fid,np,'float32');
+  y=fread(fid,np,'float32');
+  z=fread(fid,np,'float32');
+  velocity=fread(fid,np,'float32');
+  fclose(fid);
+end 
