@@ -1,4 +1,4 @@
-      function u_1(x,y,z) !set value for the flow velocity in the x direction
+function u_1(x,y,z) !set value for the flow velocity in the x direction
       real :: u_1
       real :: x
       real :: y
@@ -177,7 +177,7 @@
 !************************************************************************
 
       program scott
-
+      use omp_lib
       use cdata
       use stats
       implicit none
@@ -212,10 +212,14 @@
 
 
 
-
+!$OMP PARALLEL
+!$OMP DO
 
       do itime=1,1000
       t=itime*dt
+
+!$OMP DO
+
       do i=1,particles
 
 
@@ -223,277 +227,277 @@
 
 
 
-      k_1=(-1/(sin(y(i)%theta)))
-     &*((((1/(2.0*G))*(1-(p_3(y(i)%phi,y(i)%theta))**2)))
-     &+(0.5*((w_1(y(i)%x(1),y(i)%x(2),y(i)%x(3))*p_2(y(i)%phi,
-     &y(i)%theta))-((w_2(y(i)%x(1),y(i)%x(2),y(i)%x(3))*p_1
-     &(y(i)%phi,y(i)%theta)))))+(alpha*(((-e_11(y(i)%x(1),
-     &y(i)%x(2),y(i)%x(3)))*((p_1(y(i)%phi,y(i)%theta))**2)*
-     &(p_3(y(i)%phi,y(i)%theta))-(2*(e_12(y(i)%x(1),y(i)%x(2),
-     &y(i)%x(3))*(p_1(y(i)%phi,y(i)%theta))*(p_2(y(i)%phi,y(i)
-     &%theta))*(p_3(y(i)%phi,y(i)%theta))))+((e_13(y(i)%x(1),
-     &y(i)%x(2),y(i)%x(3)))*((p_1(y(i)%phi,y(i)%theta))*
-     &(1-(2*(p_3(y(i)%phi,y(i)%theta))**2))))-((e_22(y(i)%x(1)
-     &,y(i)%x(2),y(i)%x(3)))*(p_3(y(i)%phi,y(i)%theta))*
-     &((p_2(y(i)%phi,y(i)%theta))**2))+((e_23(y(i)%x(1),y(i)%x(2),
-     &y(i)%x(3)))*((p_2(y(i)%phi,y(i)%theta))*(1-(2*
-     &((p_3(y(i)%phi,y(i)%theta))**2)))))+((e_33(y(i)%x(1),
-     &y(i)%x(2),y(i)%x(3)))*((p_3(y(i)%phi,y(i)%theta))*
-     &(1-((p_3(y(i)%phi,y(i)%theta))**2))))))))
+      k_1=(-1/(sin(y(i)%theta)))&
+      *((((1/(2.0*G))*(1-(p_3(y(i)%phi,y(i)%theta))**2)))&
+      +(0.5*((w_1(y(i)%x(1),y(i)%x(2),y(i)%x(3))*p_2(y(i)%phi,&
+      y(i)%theta))-((w_2(y(i)%x(1),y(i)%x(2),y(i)%x(3))*p_1&
+      (y(i)%phi,y(i)%theta)))))+(alpha*(((-e_11(y(i)%x(1),&
+      y(i)%x(2),y(i)%x(3)))*((p_1(y(i)%phi,y(i)%theta))**2)*&
+      (p_3(y(i)%phi,y(i)%theta))-(2*(e_12(y(i)%x(1),y(i)%x(2),&
+      y(i)%x(3))*(p_1(y(i)%phi,y(i)%theta))*(p_2(y(i)%phi,y(i)&
+      %theta))*(p_3(y(i)%phi,y(i)%theta))))+((e_13(y(i)%x(1),&
+      y(i)%x(2),y(i)%x(3)))*((p_1(y(i)%phi,y(i)%theta))*&
+      (1-(2*(p_3(y(i)%phi,y(i)%theta))**2))))-((e_22(y(i)%x(1)&
+      ,y(i)%x(2),y(i)%x(3)))*(p_3(y(i)%phi,y(i)%theta))*&
+      ((p_2(y(i)%phi,y(i)%theta))**2))+((e_23(y(i)%x(1),y(i)%x(2),&
+      y(i)%x(3)))*((p_2(y(i)%phi,y(i)%theta))*(1-(2*&
+      ((p_3(y(i)%phi,y(i)%theta))**2)))))+((e_33(y(i)%x(1),&
+      y(i)%x(2),y(i)%x(3)))*((p_3(y(i)%phi,y(i)%theta))*&
+      (1-((p_3(y(i)%phi,y(i)%theta))**2))))))))
 
 
 
 
-      l_1=(1/sin(y(i)%theta))*(0.5*(((w_3(y(i)%x(1),y(i)%x(2),
-     &y(i)%x(3)))*((p_1(y(i)%phi,y(i)%theta))**2+((p_2(y(i)%phi,
-     &y(i)%theta))**2)))-(w_1(y(i)%x(1),y(i)%x(2),y(i)%x(3))*p_3
-     &(y(i)%phi,y(i)%theta)*p_1(y(i)%phi,y(i)%theta))-
-     &(w_2(y(i)%x(1),y(i)%x(2),y(i)%x(3))*p_2(y(i)%phi,y(i)%theta)
-     &*p_3(y(i)%phi,y(i)%theta)))+(alpha*((((-e_11(y(i)%x(1),y(i)%x(2),
-     &y(i)%x(3)))*(p_1(y(i)%phi,y(i)%theta))*(p_2(y(i)%phi,
-     &y(i)%theta)))+((e_12(y(i)%x(1),y(i)%x(2),y(i)%x(3)))*
-     &(((p_1(y(i)%phi,y(i)%theta))**2)-((p_2(y(i)%phi,y(i)%theta))
-     &**2)))-(e_13(y(i)%x(1),y(i)%x(2),y(i)%x(3))*(p_3(y(i)%phi,
-     &y(i)%theta))*(p_2(y(i)%phi,y(i)%theta)))+((e_22(y(i)%x(1)
-     &,y(i)%x(2),y(i)%x(3)))*(p_2(y(i)%phi,y(i)%theta))*
-     &(p_1(y(i)%phi,y(i)%theta)))+((e_23(y(i)%x(1),y(i)%x(2),
-     &y(i)%x(3)))*(p_1(y(i)%phi,y(i)%theta))*(p_3(y(i)%phi,
-     &y(i)%theta)))))))
+      l_1=(1/sin(y(i)%theta))*(0.5*(((w_3(y(i)%x(1),y(i)%x(2),&
+      y(i)%x(3)))*((p_1(y(i)%phi,y(i)%theta))**2+((p_2(y(i)%phi,&
+      y(i)%theta))**2)))-(w_1(y(i)%x(1),y(i)%x(2),y(i)%x(3))*p_3&
+      (y(i)%phi,y(i)%theta)*p_1(y(i)%phi,y(i)%theta))-&
+      (w_2(y(i)%x(1),y(i)%x(2),y(i)%x(3))*p_2(y(i)%phi,y(i)%theta)&
+      *p_3(y(i)%phi,y(i)%theta)))+(alpha*((((-e_11(y(i)%x(1),y(i)%x(2),&
+      y(i)%x(3)))*(p_1(y(i)%phi,y(i)%theta))*(p_2(y(i)%phi,&
+      y(i)%theta)))+((e_12(y(i)%x(1),y(i)%x(2),y(i)%x(3)))*&
+      (((p_1(y(i)%phi,y(i)%theta))**2)-((p_2(y(i)%phi,y(i)%theta))&
+      **2)))-(e_13(y(i)%x(1),y(i)%x(2),y(i)%x(3))*(p_3(y(i)%phi,&
+      y(i)%theta))*(p_2(y(i)%phi,y(i)%theta)))+((e_22(y(i)%x(1)&
+      ,y(i)%x(2),y(i)%x(3)))*(p_2(y(i)%phi,y(i)%theta))*&
+      (p_1(y(i)%phi,y(i)%theta)))+((e_23(y(i)%x(1),y(i)%x(2),&
+      y(i)%x(3)))*(p_1(y(i)%phi,y(i)%theta))*(p_3(y(i)%phi,&
+      y(i)%theta)))))))
 
-      j_1=(V*(p_1(y(i)%phi,y(i)%theta)))+
-     &u_1(y(i)%x(1),y(i)%x(2),y(i)%x(3))
+      j_1=(V*(p_1(y(i)%phi,y(i)%theta)))+&
+      u_1(y(i)%x(1),y(i)%x(2),y(i)%x(3))
 
-      h_1=(V*(p_2(y(i)%phi,y(i)%theta)))+
-     &u_2(y(i)%x(1),y(i)%x(2),y(i)%x(3))
+      h_1=(V*(p_2(y(i)%phi,y(i)%theta)))+&
+      u_2(y(i)%x(1),y(i)%x(2),y(i)%x(3))
 
-      g_1=(V*(p_3(y(i)%phi,y(i)%theta)))+
-     &u_3(y(i)%x(1),y(i)%x(2),y(i)%x(3))
-
-
-
-
-      k_2=(-1/(sin(y(i)%theta+(0.5*h*k_1))))
-     &*((((1/(2.0*G))*(1-(p_3(y(i)%phi+(0.5*h*l_1),
-     &y(i)%theta+(0.5*h*k_1)))**2)))+(0.5*((w_1(y(i)%x(1)+
-     &(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1))
-     &*p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))-
-     &((w_2(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+
-     &(0.5*h*g_1))*p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))))
-     &+(alpha*(((-e_11(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),
-     &y(i)%x(3)+(0.5*h*g_1)))*((p_1(y(i)%phi+(0.5*h*l_1),
-     &y(i)%theta+(0.5*h*k_1)))**2)*(p_3(y(i)%phi+(0.5*h*l_1),
-     &y(i)%theta+(0.5*h*k_1)))-(2*(e_12(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)
-     &+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1))*(p_1(y(i)%phi+(0.5*h*l_1),
-     &y(i)%theta+(0.5*h*k_1)))*(p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+
-     &(0.5*h*k_1)))*(p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))))
-     &+((e_13(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+
-     &(0.5*h*g_1)))*((p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))
-     &*(1-(2*(p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2))))
-     &-((e_22(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)
-     &+(0.5*h*g_1)))*(p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))
-     &*((p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2))+
-     &((e_23(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+
-     &(0.5*h*g_1)))*((p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))
-     &*(1-(2*((p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2)))))
-     &+((e_33(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+
-     &(0.5*h*g_1)))*((p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))*
-     &(1-((p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2))))))))
-
-
-      l_2=(1/sin(y(i)%theta)+(0.5*h*k_1))*(0.5*(((w_3(y(i)%x(1)+
-     &(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1)))*
-     &((p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2+
-     &((p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2)))-
-     &(w_1(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+
-     &(0.5*h*g_1))*p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))
-     &*p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))-
-     &(w_2(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+
-     &(0.5*h*g_1))*p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))
-     &*p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))+(alpha*
-     &((((-e_11(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),
-     &y(i)%x(3)+(0.5*h*g_1)))*(p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+
-     &(0.5*h*k_1)))*(p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)
-     &)))+((e_12(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1)
-     &,y(i)%x(3)+(0.5*h*g_1)))*(((p_1(y(i)%phi+(0.5*h*l_1),
-     &y(i)%theta+(0.5*h*k_1)))**2)-((p_2(y(i)%phi+(0.5*h*l_1),
-     &y(i)%theta+(0.5*h*k_1)))**2)))-(e_13(y(i)%x(1)+(0.5*h*j_1),
-     &y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1))*(p_3(y(i)%phi+
-     &(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))*(p_2(y(i)%phi+(0.5*h*l_1)
-     &,y(i)%theta+(0.5*h*k_1))))+((e_22(y(i)%x(1)+(0.5*h*j_1),
-     &y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1)))*(p_2(y(i)%phi
-     &+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))*(p_1(y(i)%phi+(0.5*h*l_1)
-     &,y(i)%theta+(0.5*h*k_1))))+((e_23(y(i)%x(1)+(0.5*h*j_1)
-     &,y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1)))*(p_1(y(i)%phi
-     &+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))*(p_3(y(i)%phi+
-     &(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))))))
-
-
-      j_2=(V*(p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))+
-     &u_1(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1)
-     &,y(i)%x(3)+(0.5*h*g_1))
-
-
-
-      h_2=(V*(p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))+
-     &u_2(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1)
-     &,y(i)%x(3)+(0.5*h*g_1))
-
-
-
-      g_2=(V*(p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))+
-     &u_3(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1)
-     &,y(i)%x(3)+(0.5*h*g_1))
-
-
-      k_3=(-1/(sin(y(i)%theta+(0.5*h*k_2))))
-     &*((((1/(2.0*G))*(1-(p_3(y(i)%phi+(0.5*h*l_2),
-     &y(i)%theta+(0.5*h*k_2)))**2)))+(0.5*((w_1(y(i)%x(1)+
-     &(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2))
-     &*p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))-
-     &((w_2(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+
-     &(0.5*h*g_2))*p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))))
-     &+(alpha*(((-e_11(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),
-     &y(i)%x(3)+(0.5*h*g_2)))*((p_1(y(i)%phi+(0.5*h*l_2),
-     &y(i)%theta+(0.5*h*k_2)))**2)*(p_3(y(i)%phi+(0.5*h*l_2),
-     &y(i)%theta+(0.5*h*k_2)))-(2*(e_12(y(i)%x(1)+(0.5*h*j_2),
-     &y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2))*(p_1(y(i)%phi+
-     &(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))*(p_2(y(i)%phi+(0.5*h*l_2),
-     &y(i)%theta+(0.5*h*k_2)))*(p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+
-     &(0.5*h*k_2)))))+((e_13(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+
-     &(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*((p_1(y(i)%phi+(0.5*h*l_2)
-     &,y(i)%theta+(0.5*h*k_2)))*(1-(2*(p_3(y(i)%phi+(0.5*h*l_2),y(i)
-     &%theta+(0.5*h*k_2)))**2))))-((e_22(y(i)%x(1)+(0.5*h*j_2),
-     &y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*(p_3(y(i)%phi+
-     &(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))*((p_2(y(i)%phi+(0.5*h*l_2)
-     &,y(i)%theta+(0.5*h*k_2)))**2))+((e_23(y(i)%x(1)+(0.5*h*j_2),
-     &y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*((p_2(y(i)%phi+
-     &(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))*(1-(2*((p_3(y(i)%phi+
-     &(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))**2)))))+((e_33(y(i)%x(1)+
-     &(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*
-     &((p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))*
-     &(1-((p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))**2))))))))
+      g_1=(V*(p_3(y(i)%phi,y(i)%theta)))+&
+      u_3(y(i)%x(1),y(i)%x(2),y(i)%x(3))
 
 
 
 
-      l_3=(1/sin(y(i)%theta)+(0.5*h*k_2))*(0.5*(((w_3(y(i)%x(1)+
-     &(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*
-     &((p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))**2+
-     &((p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))**2)))-
-     &(w_1(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+
-     &(0.5*h*g_2))*p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))
-     &*p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))-
-     &(w_2(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+
-     &(0.5*h*g_2))*p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))
-     &*p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))+(alpha*
-     &((((-e_11(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),
-     &y(i)%x(3)+(0.5*h*g_2)))*(p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+
-     &(0.5*h*k_2)))*(p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2
-     &))))+((e_12(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),
-     &y(i)%x(3)+(0.5*h*g_2)))*(((p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+
-     &(0.5*h*k_2)))**2)-((p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+
-     &(0.5*h*k_2)))**2)))-(e_13(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+
-     &(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2))*(p_3(y(i)%phi+(0.5*h*l_2)
-     &,y(i)%theta+(0.5*h*k_2)))*(p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta
-     &+(0.5*h*k_2))))+((e_22(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+
-     &(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*(p_2(y(i)%phi+(0.5*h*l_2)
-     &,y(i)%theta+(0.5*h*k_2)))*(p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta
-     &+(0.5*h*k_2))))+((e_23(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+
-     &(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*(p_1(y(i)%phi+(0.5*h*l_2)
-     &,y(i)%theta+(0.5*h*k_2)))*(p_3(y(i)%phi+(0.5*h*l_2),
-     &y(i)%theta+(0.5*h*k_2))))))))
+      k_2=(-1/(sin(y(i)%theta+(0.5*h*k_1))))&
+      *((((1/(2.0*G))*(1-(p_3(y(i)%phi+(0.5*h*l_1),&
+      y(i)%theta+(0.5*h*k_1)))**2)))+(0.5*((w_1(y(i)%x(1)+&
+      (0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1))&
+      *p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))-&
+      ((w_2(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+&
+      (0.5*h*g_1))*p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))))&
+      +(alpha*(((-e_11(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),&
+      y(i)%x(3)+(0.5*h*g_1)))*((p_1(y(i)%phi+(0.5*h*l_1),&
+      y(i)%theta+(0.5*h*k_1)))**2)*(p_3(y(i)%phi+(0.5*h*l_1),&
+      y(i)%theta+(0.5*h*k_1)))-(2*(e_12(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)&
+      +(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1))*(p_1(y(i)%phi+(0.5*h*l_1),&
+      y(i)%theta+(0.5*h*k_1)))*(p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+&
+      (0.5*h*k_1)))*(p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))))&
+      +((e_13(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+&
+      (0.5*h*g_1)))*((p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))&
+      *(1-(2*(p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2))))&
+      -((e_22(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)&
+      +(0.5*h*g_1)))*(p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))&
+      *((p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2))+&
+      ((e_23(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+&
+      (0.5*h*g_1)))*((p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))&
+      *(1-(2*((p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2)))))&
+      +((e_33(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+&
+      (0.5*h*g_1)))*((p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))*&
+      (1-((p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2))))))))
+
+
+      l_2=(1/sin(y(i)%theta)+(0.5*h*k_1))*(0.5*(((w_3(y(i)%x(1)+&
+      (0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1)))*&
+      ((p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2+&
+      ((p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))**2)))-&
+      (w_1(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+&
+      (0.5*h*g_1))*p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))&
+      *p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))-&
+      (w_2(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+&
+      (0.5*h*g_1))*p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))&
+      *p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))+(alpha*&
+      ((((-e_11(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1),&
+      y(i)%x(3)+(0.5*h*g_1)))*(p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+&
+      (0.5*h*k_1)))*(p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)&
+      )))+((e_12(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1)&
+      ,y(i)%x(3)+(0.5*h*g_1)))*(((p_1(y(i)%phi+(0.5*h*l_1),&
+      y(i)%theta+(0.5*h*k_1)))**2)-((p_2(y(i)%phi+(0.5*h*l_1),&
+      y(i)%theta+(0.5*h*k_1)))**2)))-(e_13(y(i)%x(1)+(0.5*h*j_1),&
+      y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1))*(p_3(y(i)%phi+&
+      (0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))*(p_2(y(i)%phi+(0.5*h*l_1)&
+      ,y(i)%theta+(0.5*h*k_1))))+((e_22(y(i)%x(1)+(0.5*h*j_1),&
+      y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1)))*(p_2(y(i)%phi&
+      +(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))*(p_1(y(i)%phi+(0.5*h*l_1)&
+      ,y(i)%theta+(0.5*h*k_1))))+((e_23(y(i)%x(1)+(0.5*h*j_1)&
+      ,y(i)%x(2)+(0.5*h*h_1),y(i)%x(3)+(0.5*h*g_1)))*(p_1(y(i)%phi&
+      +(0.5*h*l_1),y(i)%theta+(0.5*h*k_1)))*(p_3(y(i)%phi+&
+      (0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))))))
+
+
+      j_2=(V*(p_1(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))+&
+      u_1(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1)&
+      ,y(i)%x(3)+(0.5*h*g_1))
+
+
+
+      h_2=(V*(p_2(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))+&
+      u_2(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1)&
+      ,y(i)%x(3)+(0.5*h*g_1))
+
+
+
+      g_2=(V*(p_3(y(i)%phi+(0.5*h*l_1),y(i)%theta+(0.5*h*k_1))))+&
+      u_3(y(i)%x(1)+(0.5*h*j_1),y(i)%x(2)+(0.5*h*h_1)&
+      ,y(i)%x(3)+(0.5*h*g_1))
+
+
+      k_3=(-1/(sin(y(i)%theta+(0.5*h*k_2))))&
+      *((((1/(2.0*G))*(1-(p_3(y(i)%phi+(0.5*h*l_2),&
+      y(i)%theta+(0.5*h*k_2)))**2)))+(0.5*((w_1(y(i)%x(1)+&
+      (0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2))&
+      *p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))-&
+      ((w_2(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+&
+      (0.5*h*g_2))*p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))))&
+      +(alpha*(((-e_11(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),&
+      y(i)%x(3)+(0.5*h*g_2)))*((p_1(y(i)%phi+(0.5*h*l_2),&
+      y(i)%theta+(0.5*h*k_2)))**2)*(p_3(y(i)%phi+(0.5*h*l_2),&
+      y(i)%theta+(0.5*h*k_2)))-(2*(e_12(y(i)%x(1)+(0.5*h*j_2),&
+      y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2))*(p_1(y(i)%phi+&
+      (0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))*(p_2(y(i)%phi+(0.5*h*l_2),&
+      y(i)%theta+(0.5*h*k_2)))*(p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+&
+      (0.5*h*k_2)))))+((e_13(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+&
+      (0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*((p_1(y(i)%phi+(0.5*h*l_2)&
+      ,y(i)%theta+(0.5*h*k_2)))*(1-(2*(p_3(y(i)%phi+(0.5*h*l_2),y(i)&
+      %theta+(0.5*h*k_2)))**2))))-((e_22(y(i)%x(1)+(0.5*h*j_2),&
+      y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*(p_3(y(i)%phi+&
+      (0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))*((p_2(y(i)%phi+(0.5*h*l_2)&
+      ,y(i)%theta+(0.5*h*k_2)))**2))+((e_23(y(i)%x(1)+(0.5*h*j_2),&
+      y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*((p_2(y(i)%phi+&
+      (0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))*(1-(2*((p_3(y(i)%phi+&
+      (0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))**2)))))+((e_33(y(i)%x(1)+&
+      (0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*&
+      ((p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))*&
+      (1-((p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))**2))))))))
 
 
 
 
-      j_3=(V*(p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))+
-     &u_1(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2)
-     &,y(i)%x(3)+(0.5*h*g_2))
+      l_3=(1/sin(y(i)%theta)+(0.5*h*k_2))*(0.5*(((w_3(y(i)%x(1)+&
+      (0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*&
+      ((p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))**2+&
+      ((p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))**2)))-&
+      (w_1(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+&
+      (0.5*h*g_2))*p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))&
+      *p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2)))-&
+      (w_2(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),y(i)%x(3)+&
+      (0.5*h*g_2))*p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))&
+      *p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))+(alpha*&
+      ((((-e_11(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),&
+      y(i)%x(3)+(0.5*h*g_2)))*(p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+&
+      (0.5*h*k_2)))*(p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2&
+      ))))+((e_12(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2),&
+      y(i)%x(3)+(0.5*h*g_2)))*(((p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+&
+      (0.5*h*k_2)))**2)-((p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+&
+      (0.5*h*k_2)))**2)))-(e_13(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+&
+      (0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2))*(p_3(y(i)%phi+(0.5*h*l_2)&
+      ,y(i)%theta+(0.5*h*k_2)))*(p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta&
+      +(0.5*h*k_2))))+((e_22(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+&
+      (0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*(p_2(y(i)%phi+(0.5*h*l_2)&
+      ,y(i)%theta+(0.5*h*k_2)))*(p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta&
+      +(0.5*h*k_2))))+((e_23(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+&
+      (0.5*h*h_2),y(i)%x(3)+(0.5*h*g_2)))*(p_1(y(i)%phi+(0.5*h*l_2)&
+      ,y(i)%theta+(0.5*h*k_2)))*(p_3(y(i)%phi+(0.5*h*l_2),&
+      y(i)%theta+(0.5*h*k_2))))))))
 
 
 
 
-      h_3=(V*(p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))+
-     &u_2(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2)
-     &,y(i)%x(3)+(0.5*h*g_2))
+      j_3=(V*(p_1(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))+&
+      u_1(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2)&
+      ,y(i)%x(3)+(0.5*h*g_2))
 
 
 
 
-      g_3=(V*(p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))+
-     &u_3(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2)
-     &,y(i)%x(3)+(0.5*h*g_2))
-
-
-      k_4=(-1/(sin(y(i)%theta+(h*k_3))))
-     &*((((1/(2.0*G))*(1-(p_3(y(i)%phi+(h*l_3),
-     &y(i)%theta+(h*k_3)))**2)))+(0.5*((w_1(y(i)%x(1)+
-     &(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3))
-     &*p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))-
-     &((w_2(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+
-     &(h*g_3))*p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))))+
-     &(alpha*(((-e_11(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),
-     &y(i)%x(3)+(h*g_3)))*((p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))
-     &**2)*(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))-(2*(e_12
-     &(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3))*
-     &(p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))*(p_2(y(i)%phi+
-     &(h*l_3),y(i)%theta+(h*k_3)))*(p_3(y(i)%phi+(h*l_3),y(i)%theta+
-     &(h*k_3)))))+((e_13(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)
-     &+(h*g_3)))*((p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))*
-     &(1-(2*(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))**2))))-
-     &((e_22(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))
-     &*(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))*((p_2(y(i)%phi+
-     &(h*l_3),y(i)%theta+(h*k_3)))**2))+((e_23(y(i)%x(1)+(h*j_3),
-     &y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))*((p_2(y(i)%phi+(h*l_3)
-     &,y(i)%theta+(h*k_3)))*(1-(2*((p_3(y(i)%phi+(h*l_3),y(i)%theta
-     &+(h*k_3)))**2)))))+((e_33(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)
-     &,y(i)%x(3)+(h*g_3)))*((p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))
-     &*(1-((p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))**2))))))))
-
-
-
-      l_4=(1/sin(y(i)%theta)+(h*k_3))*(0.5*(((w_3(y(i)%x(1)+
-     &(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))*
-     &((p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))**2+
-     &((p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))**2)))-
-     &(w_1(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+
-     &(h*g_3))*p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))
-     &*p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))-
-     &(w_2(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+
-     &(h*g_3))*p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))
-     &*p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+
-     &(alpha*((((-e_11(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),
-     &y(i)%x(3)+(h*g_3)))*(p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))
-     &*(p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+((e_12(y(i)%x(1)+
-     &(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))*(((p_1(y(i)%phi+
-     &(h*l_3),y(i)%theta+(h*k_3)))**2)-((p_2(y(i)%phi+(h*l_3),
-     &y(i)%theta+(h*k_3)))**2)))-(e_13(y(i)%x(1)+(h*j_3),y(i)%x(2)+
-     &(h*h_3),y(i)%x(3)+(h*g_3))*(p_3(y(i)%phi+(h*l_3),y(i)%theta
-     &+(h*k_3)))*(p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+
-     &((e_22(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))
-     &*(p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))*(p_1(y(i)%phi+(h*l_3)
-     &,y(i)%theta+(h*k_3))))+((e_23(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)
-     &,y(i)%x(3)+(h*g_3)))*(p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))
-     &*(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))))))
-
-
-      j_4=(V*(p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+
-     &u_1(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)
-     &,y(i)%x(3)+(h*g_3))
-
-
-      h_4=(V*(p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+
-     &u_2(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)
-     &,y(i)%x(3)+(h*g_3))
+      h_3=(V*(p_2(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))+&
+      u_2(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2)&
+      ,y(i)%x(3)+(0.5*h*g_2))
 
 
 
 
+      g_3=(V*(p_3(y(i)%phi+(0.5*h*l_2),y(i)%theta+(0.5*h*k_2))))+&
+      u_3(y(i)%x(1)+(0.5*h*j_2),y(i)%x(2)+(0.5*h*h_2)&
+      ,y(i)%x(3)+(0.5*h*g_2))
 
 
-      g_4=(V*(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+
-     &u_3(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)
-     &,y(i)%x(3)+(h*g_3))
+      k_4=(-1/(sin(y(i)%theta+(h*k_3))))&
+      *((((1/(2.0*G))*(1-(p_3(y(i)%phi+(h*l_3),&
+      y(i)%theta+(h*k_3)))**2)))+(0.5*((w_1(y(i)%x(1)+&
+      (h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3))&
+      *p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))-&
+      ((w_2(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+&
+      (h*g_3))*p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))))+&
+      (alpha*(((-e_11(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),&
+      y(i)%x(3)+(h*g_3)))*((p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))&
+      **2)*(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))-(2*(e_12&
+      (y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3))*&
+      (p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))*(p_2(y(i)%phi+&
+      (h*l_3),y(i)%theta+(h*k_3)))*(p_3(y(i)%phi+(h*l_3),y(i)%theta+&
+      (h*k_3)))))+((e_13(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)&
+      +(h*g_3)))*((p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))*&
+      (1-(2*(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))**2))))-&
+      ((e_22(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))&
+      *(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))*((p_2(y(i)%phi+&
+      (h*l_3),y(i)%theta+(h*k_3)))**2))+((e_23(y(i)%x(1)+(h*j_3),&
+      y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))*((p_2(y(i)%phi+(h*l_3)&
+      ,y(i)%theta+(h*k_3)))*(1-(2*((p_3(y(i)%phi+(h*l_3),y(i)%theta&
+      +(h*k_3)))**2)))))+((e_33(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)&
+      ,y(i)%x(3)+(h*g_3)))*((p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))&
+      *(1-((p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))**2))))))))
+
+
+
+      l_4=(1/sin(y(i)%theta)+(h*k_3))*(0.5*(((w_3(y(i)%x(1)+&
+      (h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))*&
+      ((p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))**2+&
+      ((p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))**2)))-&
+      (w_1(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+&
+      (h*g_3))*p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))&
+      *p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))-&
+      (w_2(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+&
+      (h*g_3))*p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))&
+      *p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+&
+      (alpha*((((-e_11(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),&
+      y(i)%x(3)+(h*g_3)))*(p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))&
+      *(p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+((e_12(y(i)%x(1)+&
+      (h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))*(((p_1(y(i)%phi+&
+      (h*l_3),y(i)%theta+(h*k_3)))**2)-((p_2(y(i)%phi+(h*l_3),&
+      y(i)%theta+(h*k_3)))**2)))-(e_13(y(i)%x(1)+(h*j_3),y(i)%x(2)+&
+      (h*h_3),y(i)%x(3)+(h*g_3))*(p_3(y(i)%phi+(h*l_3),y(i)%theta&
+      +(h*k_3)))*(p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+&
+      ((e_22(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3),y(i)%x(3)+(h*g_3)))&
+      *(p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))*(p_1(y(i)%phi+(h*l_3)&
+      ,y(i)%theta+(h*k_3))))+((e_23(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)&
+      ,y(i)%x(3)+(h*g_3)))*(p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3)))&
+      *(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))))))
+
+
+      j_4=(V*(p_1(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+&
+      u_1(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)&
+      ,y(i)%x(3)+(h*g_3))
+
+
+      h_4=(V*(p_2(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+&
+      u_2(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)&
+      ,y(i)%x(3)+(h*g_3))
+
+
+
+
+
+
+      g_4=(V*(p_3(y(i)%phi+(h*l_3),y(i)%theta+(h*k_3))))+&
+      u_3(y(i)%x(1)+(h*j_3),y(i)%x(2)+(h*h_3)&
+      ,y(i)%x(3)+(h*g_3))
 
 
 
@@ -509,7 +513,7 @@
       y(i)%velocity=(y(i)%x(2)-y(i)%x_old(2))/dt
 
 !*************************************************************************
-
+!$OMP DO
       do n=1,5000
       IF (y(i)%x(1)>pi) THEN         !ensure all solutions are kept
       y(i)%x(1)=y(i)%x(1)-(2*pi)     !in a box with dimensions pi
@@ -529,14 +533,14 @@
       y(i)%x(3)=y(i)%x(3)+(2*pi)
       END IF
       end do
-
+!$OMP END DO
 !**************************************************************************
 
 
 
       end do
 
-
+!$OMP END DO
 
 
       if (mod(itime,shots)==0) then
@@ -544,6 +548,9 @@
       end if
 
       end do
+!$OMP END DO
+!$OMP END PARALLEL
+
 
       end program
 
@@ -557,8 +564,8 @@
 
       character (len=40) :: print_file
       write(unit=print_file,fmt="(a,i4.4,a)")"par",filenumber,".log"
-      open(unit=98,file=print_file,status='replace',form='unformatted'
-     &,access='stream')
+      open(unit=98,file=print_file,status='replace',form='unformatted'&
+      ,access='stream')
       write(98) t
       write(98) particles
       write(98) y(:)%x(1)
@@ -567,3 +574,8 @@
       write(98) y(:)%velocity
       close(98)
       end subroutine
+
+
+
+
+
