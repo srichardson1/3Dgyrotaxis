@@ -1,0 +1,9 @@
+function particle_anim(start,finish)
+ 
+for i=start:finish
+  
+  particle_load(i)
+  particle_plot
+  fOUT=sprintf('par%04d.jpeg',i)
+  print('-djpeg',fOUT)
+end
